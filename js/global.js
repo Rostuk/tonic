@@ -1,13 +1,3 @@
-/*-------------------------------------------------------------------------------------------------------------------------------*/
-/*This is main JS file that contains custom style rules used in this template*/
-/*-------------------------------------------------------------------------------------------------------------------------------*/
-/* Template Name: "Title"*/
-/* Version: 1.0 Initial Release*/
-/* Build Date: 06-02-2016*/
-/* Author: Title*/
-/* Copyright: (C) 2016 */
-/*-------------------------------------------------------------------------------------------------------------------------------*/
-
 /*--------------------------------------------------------*/
 /* TABLE OF CONTENTS: */
 /*--------------------------------------------------------*/
@@ -108,15 +98,23 @@ $(function() {
 		        nextButton: '.swiper-button-next-'+index,
 		        prevButton: '.swiper-button-prev-'+index,
 		        slidesPerView: slidesPerViewVar,
+                slidesPerGroup: (slidesPerViewVar!='auto')?slidesPerViewVar:1,
 		        autoHeight:($t.is('[data-auto-height]'))?parseInt($t.data('auto-height'), 10):0,
 		        loop: ($t.is('[data-loop]'))?parseInt($t.data('loop'), 10):0,
 				autoplay: ($t.is('[data-autoplay]'))?parseInt($t.data('autoplay'), 10):0,
-		        breakpoints: ($t.is('[data-breakpoints]'))? { 767: { slidesPerView: parseInt($t.attr('data-xs-slides'), 10) }, 991: { slidesPerView: parseInt($t.attr('data-sm-slides'), 10) }, 1199: { slidesPerView: parseInt($t.attr('data-md-slides'), 10) } } : {},
+
+                
+                breakpoints: ($t.is('[data-breakpoints]'))? { 
+                    767: { slidesPerView: ($t.attr('data-xs-slides')!='auto')?parseInt($t.attr('data-xs-slides'), 10):'auto', slidesPerGroup: ($t.attr('data-xs-slides')!='auto' && $t.data('center')!='1')?parseInt($t.attr('data-xs-slides'), 10):1 }, 
+                    991: { slidesPerView: ($t.attr('data-sm-slides')!='auto')?parseInt($t.attr('data-sm-slides'), 10):'auto', slidesPerGroup: ($t.attr('data-sm-slides')!='auto' && $t.data('center')!='1')?parseInt($t.attr('data-sm-slides'), 10):1 }, 
+                    1199: { slidesPerView: ($t.attr('data-md-slides')!='auto')?parseInt($t.attr('data-md-slides'), 10):'auto', slidesPerGroup: ($t.attr('data-md-slides')!='auto' && $t.data('center')!='1')?parseInt($t.attr('data-md-slides'), 10):1 }}: {},
+                
 		        initialSlide: ($t.is('[data-ini]'))?parseInt($t.data('ini'), 10):0,
 		        speed: ($t.is('[data-speed]'))?parseInt($t.data('speed'), 10):500,
 		        keyboardControl: true,
                 preloadImages: false,
                 lazyLoading: true,
+                slidesPerColumn: ($t.is('[data-slide-column]'))?parseInt($t.data('slide-column'), 10):0,
 		        mousewheelControl: ($t.is('[data-mousewheel]'))?parseInt($t.data('mousewheel'), 10):0,
 		        mousewheelReleaseOnEdges: true,
 		        direction: ($t.is('[data-direction]'))?$t.data('direction'):'horizontal',
@@ -196,7 +194,17 @@ $(function() {
     });
     //open and close popup
 
+    $(".nav_iteams").on('click', function() {
+        var header_height = $('.header').outerHeight();
+        var acc_title = $('.acc_title').outerHeight();
+        var top_offser = header_height + acc_title;
+        var anchor = $(this).attr('data-attr-scroll');
+        var anchorOffset = $('#'+anchor);
 
+        $('html,body').animate({ 
+            scrollTop: anchorOffset.offset().top -top_offser
+        });    
+    });
         
     //accordeon
     $('.accordeon-title').on('click', function(){
@@ -204,21 +212,6 @@ $(function() {
         $(this).toggleClass('active triangle').next().slideToggle();
     });
 
-    
-   
-    $(".nav_iteams").on('click', function() {
-        var header_height = $('.header').outerHeight();
-        var acc_title = $('.acc_title').outerHeight();
-        var top_offser = header_height + acc_title;
-        var anchor = $(this).attr('data-attr-scroll');
-        var anchorOffset = $('#'+anchor);
-        
-        $('html,body').animate({ 
-            scrollTop: anchorOffset.offset().top -top_offser
-        }); 
-        
-        
-    });
     
     $('.navicon').on('click', function(){
         $(this).next().slideToggle();
@@ -234,5 +227,56 @@ $(function() {
         history: false
     });
     }
+    
+    
+
+    $('.application_iteams').on('click', function(){
+        var appl_attr =  $(this).attr('data-img');
+        var apll_img =  $('#'+appl_attr);
+        $('.device_imgWrapp').removeClass('active');
+        apll_img.addClass('active');
+        
+        $('.application_iteams').removeClass('active');
+        $(this).addClass('active'); 
+        
+        $('.default_img').fadeOut();
+    });
+
+    $('.device_imgWrapp .close').on('click', function(){
+        $(this).closest('.device_imgWrapp').removeClass('active');
+        
+    });
+    
+    
+    
+    $(window).scroll(function() {
+        if ($(this).scrollTop() > 1){
+            $('header').addClass("sticky_shad");
+        }
+        else{
+            $('header').removeClass("sticky_shad");
+        }
+    });
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
 });
